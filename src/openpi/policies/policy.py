@@ -133,7 +133,7 @@ class Policy(BasePolicy):
             # calculate the maximun velocity of the end effector in this action chunk
             discarded_actions = actions[0, self._replan_steps:, :self._focused_action_dim]
             if self._is_pytorch_model:
-                trajectory_distance = torch.diff(discarded_actions, dim=0).norm(dim=1).sum().item()
+                trajectory_distance = torch.diff(discarded_actions, dim=0).norm(dim=1).sum()
             else:
                 trajectory_distance = jnp.linalg.norm(jnp.diff(discarded_actions, axis=0), axis=1).sum()
             self._windowed_trajectory_distance.add(trajectory_distance)
