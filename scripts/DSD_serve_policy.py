@@ -85,11 +85,15 @@ DEFAULT_CHECKPOINT: dict[EnvMode, Checkpoint] = {
 }
 
 
-def create_default_policy(env: EnvMode, *, default_prompt: str | None = None, denoise_steps_range: int) -> _policy.Policy:
+def create_default_policy(env: EnvMode, *, default_prompt: str | None = None, denoise_steps_range: int, sample_kwargs: dict | None) -> _policy.Policy:
     """Create a default policy for the given environment."""
     if checkpoint := DEFAULT_CHECKPOINT.get(env):
         return _policy_config.create_trained_policy(
-            _config.get_config(checkpoint.config), checkpoint.dir, default_prompt=default_prompt, denoise_steps_range=denoise_steps_range
+            _config.get_config(checkpoint.config),
+            checkpoint.dir,
+            default_prompt=default_prompt,
+            denoise_steps_range=denoise_steps_range,
+            sample_kwargs=sample_kwargs
         )
     raise ValueError(f"Unsupported environment mode: {env}")
 
