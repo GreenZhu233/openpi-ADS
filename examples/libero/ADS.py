@@ -18,7 +18,7 @@ import time
 
 LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]
 LIBERO_ENV_RESOLUTION = 256  # resolution used to render training data
-log_folder = "outputs_dsd/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+log_folder = "outputs_ads/" + datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 pathlib.Path(log_folder).mkdir(parents=True, exist_ok=True)
 
 @dataclasses.dataclass
@@ -254,5 +254,5 @@ def analyze_results():
     logging.info("Average inference time (ms) by denoise steps:\n" + df.groupby("denoise_steps")["inference_time(ms)"].mean().to_string())
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, filename=pathlib.Path(log_folder) / "DSD.log", filemode="a", force=True)
+    logging.basicConfig(level=logging.INFO, filename=pathlib.Path(log_folder) / "ADS.log", filemode="a", force=True)
     tyro.cli(eval_libero)
