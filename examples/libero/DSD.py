@@ -14,6 +14,7 @@ from openpi_client import image_tools
 from openpi_client import websocket_client_policy as _websocket_client_policy
 import tqdm
 import tyro
+import time
 
 LIBERO_DUMMY_ACTION = [0.0] * 6 + [-1.0]
 LIBERO_ENV_RESOLUTION = 256  # resolution used to render training data
@@ -92,6 +93,7 @@ def eval_libero(args: Args) -> None:
 
     # Start evaluation
     total_episodes, total_successes = 0, 0
+    start_time = time.monotonic()
     for task_id in tqdm.tqdm(range(num_tasks_in_suite)):
         # Get task
         task = task_suite.get_task(task_id)
@@ -208,8 +210,9 @@ def eval_libero(args: Args) -> None:
         # Log final results
         logging.info(f"Current task success rate: {float(task_successes) / float(task_episodes)}")
         logging.info(f"Current total success rate: {float(total_successes) / float(total_episodes)}")
-
-    logging.info(f"Total success rate: {float(total_successes) / float(total_episodes)}")
+    total_time = time.monotonic() - start_time
+    logging.info(f"Total evaluation time: {total_time:.2f} seconds")
+    logging.info(f"Total success rate: {float(total_successes) / float(total_episodes):.4f}")
     logging.info(f"Total episodes: {total_episodes}")
     analyze_results()
 
